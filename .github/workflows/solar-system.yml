@@ -59,7 +59,7 @@ jobs:
             node_version: 18
 
         - name: Install Dependencies
-          uses: npm install
+          run: npm install
 
         - name: Check code coverage
           run: npm run coverage
@@ -70,4 +70,3 @@ jobs:
             name: Code-Coverage-Result
             path: coverage
             retention-days: 5
-            
