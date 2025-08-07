@@ -39,11 +39,16 @@ jobs:
             - name: Unit Testing
               run: npm test
 
+            - name: Generate Timestamp
+              id: timestamp
+              run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
+
             - name: Archive Test Results
               uses: actions/upload-artifact@v4
               with:
-                name: Mocha-Test_results-${{ steps.some_step.outputs.timestamp }}
+                name: Mocha-Test_results-${{ github.run_id }}-${{ matrix.operating_system }}-node${{ matrix.nodejs_version }}-${{ steps.timestamp.outputs.timestamp }}
                 path: test-results.xml
+
 
 
     code-coverage:
