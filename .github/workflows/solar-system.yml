@@ -42,7 +42,7 @@ jobs:
             - name: Archive Test Results
               uses: actions/upload-artifact@v4
               with:
-                name: Mocha-Test_results
+                name: Mocha-Test_results-${{ steps.some_step.outputs.timestamp }}
                 path: test-results.xml
 
 
