@@ -37,6 +37,7 @@ jobs:
               run: npm install
 
             - name: Unit Testing
+              id: nodejs-unit-test
               run: npm test
 
             - name: Generate Timestamp
@@ -44,6 +45,7 @@ jobs:
               run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
 
             - name: Archive Test Results
+              if: steps.nodejs-unit-test.outcome == 'failure' || steps.nodejs-unit-test.outcome == 'success'
               uses: actions/upload-artifact@v4
               with:
                 name: Mocha-Test_results-${{ steps.timestamp.outputs.timestamp }}
