@@ -42,5 +42,5 @@ jobs:
             - name: Archive Test Results
               uses: actions/upload-artifact@v4
               with:
-                name: Mocha-Test_results--${{ github.run_id }}
+                name: Mocha-Test_results-${{ github.run_id }}
                 path: test-results.xml
