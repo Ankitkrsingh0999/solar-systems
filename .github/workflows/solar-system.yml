@@ -178,7 +178,7 @@ jobs:
         - name: Fetch kubernetes Cluster Details
           run: |
             kubectl version --client
-            echo ------------------
+            echo -------------------
             kubectl get nodes
             
         - name: Save Nginx Ingress Controller IP as a GITHUB Environment Variable
