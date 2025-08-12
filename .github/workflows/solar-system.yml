@@ -174,8 +174,6 @@ jobs:
 
         - name: Install Kubectl CLI
           uses: azure/setup-kubectl@v3
-          with:
-            version: ''
 
         - name: Fetch kubernetes Cluster Details
           run: |
@@ -213,3 +211,16 @@ jobs:
         - name: Deploy to Dev Env
           run: |
               kubectl apply -f kubernetes/development
+
+
+
+    intergration-testing:
+          name: Dev Integration Testing
+          needs: dev-deploy
+          runs-on: ubuntu-latest
+          steps:
+            - name: Test URL Output using CURL and JQ
+              run: |
+                echo $URL
+                echo "____________________________"
+                curl https://$URL/live -s -k | jq -r .status | grep -i live
