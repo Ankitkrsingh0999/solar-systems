@@ -169,6 +169,9 @@ jobs:
       if: contains(github.ref, 'feature/')
       needs: docker
       uses: ./.github/workflows/reuse-deployment.yml
+      secrets: 
+        mongodb-password: ${{ secrets.KUBECONFIG}}
+        k8s-kubeconfig: ${{ secrets.MONGODB_PASSWORD }}
 
     prod-deploy:
       if: github.ref == 'refs/heads/main'

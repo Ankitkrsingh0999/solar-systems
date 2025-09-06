@@ -1,6 +1,11 @@
 name: Deployment - Reusabe Workflow
 on:
     workflow_call: 
+        secrets:
+            k8s-kubeconfig:  #we can give any name that only pass it wherever calling it
+                required: true
+            mongodb-password:
+                required: true
 
 jobs:
     reuse-deploy:
@@ -16,6 +21,12 @@ jobs:
 
         - name: Install Kubectl CLI
           uses: azure/setup-kubectl@v3
+
+        - name: set kubeconfig file
+          uses: azure/k8s-set-context@v4
+          with:
+            method: kubeconfig
+            kubeconfig: ${{ secrets.k8s-kubeconfig }}
 
         - name: Fetch kubernetes Cluster Details
           run: |
@@ -45,7 +56,7 @@ jobs:
             kubectl -n ${{ vars.NAMESPACE }} create secret generic mongo-db-creds \
             --from-literal=MONGO_URI=${{ env.MONGO_URI }} \
             --from-literal=MONGO_USERNAME=${{ vars.MONGO_USERNAME }} \
-            --from-literal=MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }} \
+            --from-literal=MONGO_PASSWORD=${{ secrets.mongodb-password }} \
             --save-config \
             --dry-run=client \
             -o yaml | kunectl apply -f -
