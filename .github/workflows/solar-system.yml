@@ -190,14 +190,28 @@ jobs:
         k8s-manifest-dir: kubernetes/production/
 
 
-    intergration-testing:
+    dev-intergration-testing:
           name: Dev Integration Testing
           needs: dev-deploy
           runs-on: ubuntu-latest
           steps:
             - name: Test URL Output using CURL and JQ
               env:
-                URL: ${{ needs.dev-deploy.outputs.APP_INGRESS_URL}}
+                URL: ${{ needs.dev-deploy.outputs.application-url}}
+              run: |
+                echo $URL
+                echo "____________________________"
+                curl https://$URL/live -s -k | jq -r .status | grep -i live
+
+    prod-intergration-testing:
+          name: Prod Integration Testing
+          if: github.ref == 'refs/heads/main'
+          needs: prod-deploy
+          runs-on: ubuntu-latest
+          steps:
+            - name: Test URL Output using CURL and JQ
+              env:
+                URL: ${{ needs.dev-deploy.outputs.application-url }}
               run: |
                 echo $URL
                 echo "____________________________"
